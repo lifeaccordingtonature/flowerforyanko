@@ -10,6 +10,14 @@ function App() {
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Phase 3: Start Experience
+  const startExperience = () => {
+    if (audioRef.current) {
+      audioRef.current.play().catch(e => console.log("Audio play blocked", e));
+    }
+    setHasStarted(true);
+  };
+
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.play().catch(e => console.log("Audio play failed", e));
