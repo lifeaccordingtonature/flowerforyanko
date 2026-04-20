@@ -7,6 +7,7 @@ function App() {
   const [effectMode, setEffectMode] = useState<RenderMode>(0);
   const [isReady, setIsReady] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -49,12 +50,41 @@ function App() {
       />
 
       {/* Modern UI Overlay (Main Controls) */}
-      <div className={`ui-overlay ${!hasStarted ? 'hidden' : ''}`}>
+      <div 
+        className={`ui-overlay ${!hasStarted ? 'hidden' : ''}`}
+        onClick={() => mobileDrawerOpen && setMobileDrawerOpen(false)}
+      >
         
         <div className="controls-panel-desktop">
           <Controls 
             effectMode={effectMode}
             setEffectMode={setEffectMode}
+          />
+        </div>
+
+        {/* Mobile Hamburger Menu */}
+        <button 
+          className="hamburger-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            setMobileDrawerOpen(!mobileDrawerOpen);
+          }}
+          aria-label="Menu"
+        >
+          ☰
+        </button>
+
+        {/* Mobile Drawer Menu */}
+        <div 
+          className={`mobile-drawer ${mobileDrawerOpen ? 'open' : ''}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Controls 
+            effectMode={effectMode}
+            setEffectMode={(mode) => {
+              setEffectMode(mode);
+              setMobileDrawerOpen(false);
+            }}
           />
         </div>
 
