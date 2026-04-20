@@ -73,6 +73,8 @@ export const useSketch = (
       let glitchIntensity = 0;
       let glitchSlices: GlitchSlice[] = [];
 
+      let wilt = 0;
+
       let touchX = 0, touchY = 0;
       let isTouching = false;
 
@@ -253,8 +255,9 @@ export const useSketch = (
       p.touchStarted = () => { 
         if (loadingPhase) return; 
         if (p.touches && p.touches.length > 0) {
-          touchX = p.touches[0].x;
-          touchY = p.touches[0].y;
+          const touch = p.touches[0] as any;
+          touchX = touch.x;
+          touchY = touch.y;
           isTouching = true;
         }
         triggerGlitch(); 
@@ -262,8 +265,9 @@ export const useSketch = (
       p.touchMoved = () => { 
         if (loadingPhase) return; 
         if (p.touches && p.touches.length > 0) {
-          touchX = p.touches[0].x;
-          touchY = p.touches[0].y;
+          const touch = p.touches[0] as any;
+          touchX = touch.x;
+          touchY = touch.y;
         }
       };
       p.touchEnded = () => { 
