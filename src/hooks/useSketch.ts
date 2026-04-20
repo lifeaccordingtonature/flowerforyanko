@@ -11,7 +11,7 @@ import { drawFlowerToBuffer } from '../rendering/flower-painter';
 import { renderToScreen } from '../rendering/post-processor';
 
 /**
- * React Hook that initializes and manages the p5.js sketch.
+ * React Hook that initializes and manages the p5.js sketch.1
  * 
  * @param containerRef - Reference to the DOM element where canvas will be attached
  * @param onLoadingProgress - Callback that reports loading progress percentage
