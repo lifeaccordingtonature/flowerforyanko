@@ -47,12 +47,13 @@ export const useSketch = (
       let phaseT = 0;
 
       let bloom = 0, bloomTarget = 1;
-      let renderMode: RenderMode = RenderMode.ASCII;
+      let renderMode: RenderMode = window.innerWidth < 768 ? RenderMode.ALL : RenderMode.ASCII;
       let prevMode: RenderMode = RenderMode.ASCII;
       let modeT = 1;
 
       let grid = 4, gridTarget = 4;
-      const GRID_MIN = 4, GRID_MAX = 20;
+      const GRID_MIN = window.innerWidth < 768 ? 8 : 4;
+      const GRID_MAX = window.innerWidth < 768 ? 32 : 20;
       let densDir = 1, densTimer = 0;
 
       let mInfX = 0, mInfY = 0;
