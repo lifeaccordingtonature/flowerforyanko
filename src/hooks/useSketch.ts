@@ -52,8 +52,8 @@ export const useSketch = (
       let modeT = 1;
 
       let grid = 4, gridTarget = 4;
-      const GRID_MIN = window.innerWidth < 768 ? 2 : 4;
-      const GRID_MAX = window.innerWidth < 768 ? 12 : 20;
+      const GRID_MIN = window.innerWidth < 768 ? 8 : 4;
+      const GRID_MAX = window.innerWidth < 768 ? 14 : 20;
       let densDir = 1, densTimer = 0;
 
       let mInfX = 0, mInfY = 0;
@@ -185,8 +185,13 @@ export const useSketch = (
           } else if (phase === 'waiting') {
             phaseT += dt;
             if (phaseT > 0.6) {
-              if (!isManualMode) { prevMode = renderMode; renderMode = ((renderMode + 1) % 3) as RenderMode; modeT = 0; }
-              triggerGlitch(); startElement((curEl + 1) % elements.length);
+              if (!isManualMode && renderMode !== RenderMode.ALL) { 
+                prevMode = renderMode; 
+                renderMode = ((renderMode + 1) % 3) as RenderMode; 
+                modeT = 0; 
+              }
+              triggerGlitch(); 
+              startElement((curEl + 1) % elements.length);
             }
           }
         }
