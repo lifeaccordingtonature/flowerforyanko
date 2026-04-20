@@ -73,7 +73,8 @@ export const useSketch = (
       let glitchIntensity = 0;
       let glitchSlices: GlitchSlice[] = [];
 
-      let wilt = 0;
+      let touchX = 0, touchY = 0;
+      let isTouching = false;
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
@@ -145,8 +146,10 @@ export const useSketch = (
         autoRotY += dt * 0.3 * re;
         autoRotX += dt * 0.12 * p.sin(t * 0.15) * re;
         autoRotZ += dt * 0.08 * p.sin(t * 0.09 + 1.5) * re;
-        targetMouseRotX = (p.mouseY - p.height / 2) / p.height * 1.2;
-        targetMouseRotY = (p.mouseX - p.width / 2) / p.width * 1.8;
+        const interactionY = isTouching ? touchY : p.mouseY;
+        const interactionX = isTouching ? touchX : p.mouseX;
+        targetMouseRotX = (interactionY - p.height / 2) / p.height * 1.2;
+        targetMouseRotY = (interactionX - p.width / 2) / p.width * 1.8;
         mouseRotX += (targetMouseRotX - mouseRotX) * 0.04;
         mouseRotY += (targetMouseRotY - mouseRotY) * 0.04;
         rotX = autoRotX + mouseRotX * re;
@@ -169,8 +172,8 @@ export const useSketch = (
         if (phase === 'interactive') {
           phaseT += dt;
           if (phaseT > 25) { phase = 'wilting'; phaseT = 0; triggerGlitch(); }
-          mInfX += ((p.mouseX - p.width / 2) * 0.08 - mInfX) * 0.04;
-          mInfY += ((p.mouseY - p.height / 2) * 0.08 - mInfY) * 0.04;
+          mInfX += ((interactionX - p.width / 2) * 0.08 - mInfX) * 0.04;
+          mInfY += ((interactionY - p.height / 2) * 0.08 - mInfY) * 0.04;
         } else {
           mInfX *= 0.95; mInfY *= 0.95;
           if (phase === 'wilting') {
@@ -247,6 +250,26 @@ export const useSketch = (
       };
 
       p.mousePressed = () => { if (loadingPhase) return; triggerGlitch(); };
+      p.touchStarted = () => { 
+        if (loadingPhase) return; 
+        if (p.touches && p.touches.length > 0) {
+          touchX = p.touches[0].x;
+          touchY = p.touches[0].y;
+          isTouching = true;
+        }
+        triggerGlitch(); 
+      };
+      p.touchMoved = () => { 
+        if (loadingPhase) return; 
+        if (p.touches && p.touches.length > 0) {
+          touchX = p.touches[0].x;
+          touchY = p.touches[0].y;
+        }
+      };
+      p.touchEnded = () => { 
+        if (loadingPhase) return; 
+        isTouching = false;
+      };
       p.keyPressed = () => {
         if (p.key === 'f' || p.key === 'F') p.fullscreen(!p.fullscreen());
         if (p.key === 'g' || p.key === 'G') triggerGlitch();
