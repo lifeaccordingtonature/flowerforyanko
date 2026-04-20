@@ -382,7 +382,42 @@ canvas {
   }
 }
 
-@keyframes slideIn {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.sound-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-ui-dim);
+  font-size: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  transition: all 0.2s ease;
+  z-index: var(--z-hamburger);
+}
+
+.sound-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--color-ui-active);
+  transform: scale(1.05);
+}
+
+.sound-btn:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 480px) {
+  .sound-btn {
+    bottom: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
 }

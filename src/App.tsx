@@ -10,12 +10,10 @@ function App() {
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Phase 3: Start Experience
-  const startExperience = () => {
+  const playAudio = () => {
     if (audioRef.current) {
-      audioRef.current.play().catch(e => console.log("Audio play blocked", e));
+      audioRef.current.play().catch(e => console.log("Audio play failed", e));
     }
-    setHasStarted(true);
   };
 
   // Auto-start experience when ready
@@ -51,6 +49,15 @@ function App() {
             setEffectMode={setEffectMode}
           />
         </div>
+
+        {/* Sound Button */}
+        <button 
+          className="sound-btn" 
+          onClick={playAudio}
+          aria-label="Play Audio"
+        >
+          🔊
+        </button>
       </div>
     </div>
   );
