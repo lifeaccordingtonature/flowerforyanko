@@ -76,8 +76,24 @@ export const useSketch = (
       let wilt = 0;
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth, p.windowHeight);
-        p.pixelDensity(p.displayDensity() || 1);
+        try {
+          // Try WebGL first, fallback to 2D
+          const renderer = p.WEBGL;
+          p.createCanvas(p.windowWidth, p.windowHeight, renderer);
+          
+          // Check if WebGL context was created successfully
+          const gl = p._renderer?.GL;
+          if (!gl) {
+            console.warn('WebGL not available, falling back to 2D canvas');
+            // Recreate canvas with 2D context
+            p.createCanvas(p.windowWidth, p.windowHeight);
+          }
+        } catch (e) {
+          console.warn('Canvas creation failed, using 2D context:', e);
+          p.createCanvas(p.windowWidth, p.windowHeight);
+        }
+        
+        p.pixelDensity(Math.min(p.displayDensity() || 1, 2)); // Limit pixel density on mobile
         p.textFont('Courier New, monospace');
         p.textAlign(p.CENTER, p.CENTER);
         p.noStroke();
@@ -124,21 +140,22 @@ export const useSketch = (
       ep.startExperience = () => { loadingPhase = false; };
 
       p.draw = () => {
-        const dt = p.deltaTime / 1000;
-        const f = elements[curEl];
+        try {
+          const dt = p.deltaTime / 1000;
+          const f = elements[curEl];
 
-        if (loadingPhase && !customImg) {
+          if (loadingPhase && !customImg) {
+            p.background(0);
+            bloom = p.min(0.5, warmFrames / WARM_TARGET * 0.5);
+            drawFlowerToBuffer(p, buf, f, bloom, 0, 0, 0, 0);
+            warmFrames++;
+            onLoadingProgress(p.min(100, p.floor(warmFrames / WARM_TARGET * 100)));
+            if (warmFrames >= WARM_TARGET) onReady();
+            return;
+          }
+
           p.background(0);
-          bloom = p.min(0.5, warmFrames / WARM_TARGET * 0.5);
-          drawFlowerToBuffer(p, buf, f, bloom, 0, 0, 0, 0);
-          warmFrames++;
-          onLoadingProgress(p.min(100, p.floor(warmFrames / WARM_TARGET * 100)));
-          if (warmFrames >= WARM_TARGET) onReady();
-          return;
-        }
-
-        p.background(0);
-        t += 0.016;
+          t += 0.016;
 
         rotEaseIn = p.min(1, rotEaseIn + dt * 0.08);
         const re = easeInOutCubic(rotEaseIn);
@@ -207,6 +224,14 @@ export const useSketch = (
 
         renderToScreen(p, ctx, buf, grid, mInfX, mInfY, renderMode, prevMode, modeT, chars);
         drawGlitchOverlay();
+        } catch (e) {
+          console.error('Draw error:', e);
+          // Fallback: just show a colored background
+          p.background(20, 20, 40); // Dark blue fallback
+          p.fill(255);
+          p.textSize(16);
+          p.text('Loading...', p.width/2, p.height/2);
+        }
       };
 
       const triggerGlitch = () => {
