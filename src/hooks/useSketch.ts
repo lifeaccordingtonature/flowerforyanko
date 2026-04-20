@@ -52,8 +52,8 @@ export const useSketch = (
       let modeT = 1;
 
       let grid = 4, gridTarget = 4;
-      const GRID_MIN = window.innerWidth < 768 ? 8 : 4;
-      const GRID_MAX = window.innerWidth < 768 ? 32 : 20;
+      const GRID_MIN = window.innerWidth < 768 ? 2 : 4;
+      const GRID_MAX = window.innerWidth < 768 ? 12 : 20;
       let densDir = 1, densTimer = 0;
 
       let mInfX = 0, mInfY = 0;
