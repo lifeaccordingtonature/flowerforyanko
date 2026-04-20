@@ -52,8 +52,8 @@ export const useSketch = (
       let modeT = 1;
 
       let grid = 4, gridTarget = 4;
-      const GRID_MIN = window.innerWidth < 768 ? 8 : 4;
-      const GRID_MAX = window.innerWidth < 768 ? 14 : 20;
+      const GRID_MIN = window.innerWidth < 768 ? 6 : 4;
+      const GRID_MAX = window.innerWidth < 768 ? 12 : 20;
       let densDir = 1, densTimer = 0;
 
       let mInfX = 0, mInfY = 0;
@@ -78,6 +78,7 @@ export const useSketch = (
 
       let touchX = 0, touchY = 0;
       let isTouching = false;
+      const isMobile = window.innerWidth < 768;
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
@@ -166,7 +167,8 @@ export const useSketch = (
 
         densTimer += dt;
         if (densTimer > 0.8) {
-          densTimer = 0; triggerGlitch();
+          densTimer = 0; 
+          if (!isMobile) triggerGlitch();
           if (!isManualMode) { prevMode = renderMode; renderMode = ((renderMode + 1) % 3) as RenderMode; modeT = 0; }
           if (densDir === 1) { gridTarget = GRID_MAX; densDir = -1; }
           else { gridTarget = GRID_MIN; densDir = 1; }
@@ -174,7 +176,7 @@ export const useSketch = (
 
         if (phase === 'interactive') {
           phaseT += dt;
-          if (phaseT > 25) { phase = 'wilting'; phaseT = 0; triggerGlitch(); }
+          if (phaseT > 25) { phase = 'wilting'; phaseT = 0; if (!isMobile) triggerGlitch(); }
           mInfX += ((interactionX - p.width / 2) * 0.08 - mInfX) * 0.04;
           mInfY += ((interactionY - p.height / 2) * 0.08 - mInfY) * 0.04;
         } else {
@@ -213,7 +215,7 @@ export const useSketch = (
         glitchTimer -= dt;
         if (glitchTimer <= 0 && !glitchActive) {
           glitchTimer = p.random(3, 7);
-          if (p.random() < 0.4) triggerGlitch();
+          if (p.random() < (isMobile ? 0 : 0.4)) triggerGlitch();
         }
 
         renderToScreen(p, ctx, buf, grid, mInfX, mInfY, renderMode, prevMode, modeT, chars);
@@ -221,15 +223,17 @@ export const useSketch = (
       };
 
       const triggerGlitch = () => {
-        glitchActive = true; glitchIntensity = p.random(0.4, 1.0); glitchSlices = [];
+        glitchActive = true; 
+        glitchIntensity = p.random(isMobile ? 0 : 0.2, isMobile ? 0 : 0.6); 
+        glitchSlices = [];
         const scaleF = p.min(p.width / BUF_W, p.height / BUF_H) * 0.85;
         const rW = BUF_W * scaleF, rH = BUF_H * scaleF;
         const fOx = (p.width - rW) / 2 + mInfX, fOy = (p.height - rH) / 2 + mInfY;
-        const numSlices = p.floor(p.random(3, 10));
+        const numSlices = p.floor(p.random(isMobile ? 0 : 2, isMobile ? 0 : 6));
         for (let i = 0; i < numSlices; i++) {
           const sy = p.random(fOy, fOy + rH);
           const sh = p.min(p.random(2, rH * 0.08), fOy + rH - sy);
-          glitchSlices.push({ y: sy, h: sh, fx: fOx, fw: rW, offset: p.random(-80, 80) * glitchIntensity, colorShift: p.random() < 0.4, duration: p.random(0.08, 0.3) });
+          glitchSlices.push({ y: sy, h: sh, fx: fOx, fw: rW, offset: p.random(-40, 40) * glitchIntensity, colorShift: p.random() < 0.3, duration: p.random(0.06, 0.2) });
         }
       };
 
