@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, ChangeEvent, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 const SketchCanvas = lazy(() => import('./components/SketchCanvas'));
 import { RenderMode } from './types';
 import Controls from './components/Controls';
@@ -25,7 +25,7 @@ function App() {
     <div className="app-container">
       <Suspense fallback={<div className="canvas-placeholder"></div>}>
         <SketchCanvas 
-          imageSrc={imageSrc} 
+          imageSrc={null} 
           effectMode={effectMode}
           onReady={(ready) => setIsReady(ready)}
           hasStarted={hasStarted}
