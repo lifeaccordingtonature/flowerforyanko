@@ -14,10 +14,15 @@
   --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
+html, body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
 }
 
 body {
@@ -29,7 +34,6 @@ body {
   height: 100vh;
   height: 100dvh;
   width: 100vw;
-  -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
   -webkit-text-size-adjust: 100%;
@@ -183,6 +187,7 @@ canvas {
   color: var(--color-ui-dim);
   font-family: 'Courier New', monospace;
   transition: opacity 0.8s var(--transition-smooth);
+  -webkit-font-smoothing: antialiased;
 }
 
 @media (max-width: 768px) {
@@ -194,6 +199,7 @@ canvas {
 @media (max-width: 480px) {
   .ui-overlay {
     padding: 15px;
+    padding-top: 70px;
   }
 }
 
@@ -224,6 +230,9 @@ canvas {
 
 .hamburger-btn {
   pointer-events: auto;
+  position: fixed;
+  top: 15px;
+  left: 15px;
   background: none;
   border: none;
   color: var(--color-ui-dim);
@@ -231,13 +240,15 @@ canvas {
   font-size: 28px;
   cursor: pointer;
   z-index: var(--z-hamburger);
-  padding: 12px;
-  min-width: 48px;
-  min-height: 48px;
+  padding: 8px 10px;
+  min-width: 44px;
+  min-height: 44px;
   display: none;
   align-items: center;
   justify-content: center;
   transition: color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 .hamburger-btn:active {
@@ -253,7 +264,9 @@ canvas {
 @media (max-width: 480px) {
   .hamburger-btn {
     font-size: 24px;
-    padding: 10px;
+    padding: 8px 10px;
+    top: 12px;
+    left: 12px;
   }
 }
 
@@ -267,13 +280,13 @@ canvas {
   background: rgba(0, 0, 0, 0.95);
   backdrop-filter: blur(10px);
   z-index: var(--z-drawer);
-  padding: 80px 30px;
+  padding: 70px 30px 30px 30px;
   display: flex;
   flex-direction: column;
   gap: 30px;
   transform: translateX(-100%);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: auto;
+  pointer-events: none;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -282,7 +295,7 @@ canvas {
 
 @media (max-width: 768px) {
   .mobile-drawer {
-    pointer-events: auto;
+    pointer-events: none;
   }
 }
 
@@ -299,6 +312,7 @@ canvas {
 
 .mobile-drawer.open {
   transform: translateX(0);
+  pointer-events: auto;
 }
 
 .text-btn {
@@ -413,7 +427,7 @@ canvas {
 .sound-btn {
   position: fixed;
   bottom: 20px;
-  left: 20px;
+  right: 20px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--color-ui-dim);
@@ -447,8 +461,8 @@ canvas {
 
 @media (max-width: 480px) {
   .sound-btn {
-    bottom: 15px;
-    left: 15px;
+    bottom: 20px;
+    right: 20px;
     width: 44px;
     height: 44px;
     font-size: 18px;

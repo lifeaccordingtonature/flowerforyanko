@@ -51,8 +51,11 @@ export const useSketch = (
       let prevMode: RenderMode = RenderMode.ASCII;
       let modeT = 1;
 
-      let grid = 4, gridTarget = 4;
-      const GRID_MIN = 4, GRID_MAX = 20;
+      // Responsive grid settings: mobile gets denser flowers
+      const isMobile = p.windowWidth < 768;
+      const GRID_MIN = isMobile ? 2 : 4;
+      const GRID_MAX = isMobile ? 12 : 20;
+      let grid = GRID_MIN, gridTarget = GRID_MIN;
       let densDir = 1, densTimer = 0;
 
       let mInfX = 0, mInfY = 0;

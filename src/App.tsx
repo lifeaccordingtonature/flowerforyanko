@@ -53,6 +53,7 @@ function App() {
       <div 
         className={`ui-overlay ${!hasStarted ? 'hidden' : ''}`}
         onClick={() => mobileDrawerOpen && setMobileDrawerOpen(false)}
+        style={{ pointerEvents: mobileDrawerOpen ? 'auto' : 'none' }}
       >
         
         <div className="controls-panel-desktop">
@@ -70,6 +71,7 @@ function App() {
             setMobileDrawerOpen(!mobileDrawerOpen);
           }}
           aria-label="Menu"
+          style={{ pointerEvents: 'auto' }}
         >
           ☰
         </button>
@@ -78,6 +80,7 @@ function App() {
         <div 
           className={`mobile-drawer ${mobileDrawerOpen ? 'open' : ''}`}
           onClick={(e) => e.stopPropagation()}
+          style={{ pointerEvents: mobileDrawerOpen ? 'auto' : 'none' }}
         >
           <Controls 
             effectMode={effectMode}
@@ -93,6 +96,7 @@ function App() {
           className="sound-btn" 
           onClick={playAudio}
           aria-label="Play Audio"
+          style={{ pointerEvents: 'auto' }}
         >
           🔊
         </button>
