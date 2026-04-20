@@ -18,7 +18,6 @@ const SketchCanvas: React.FC<SketchCanvasProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [isP5Ready, setIsP5Ready] = useState(false);
-  const [hasError, setHasError] = useState(false);
   
   // Phase 3: Synchronized Loading
   const loadingTimerFinished = useRef(false);
@@ -42,17 +41,11 @@ const SketchCanvas: React.FC<SketchCanvasProps> = ({
     // Start 2.5s minimum loading timer
     const timer = setTimeout(() => {
       loadingTimerFinished.current = true;
-      if (isP5Ready) {
-        onReady(true);
-      } else if (!hasError) {
-        // If p5 is not ready after 2.5s, show error
-        setHasError(true);
-        onReady(true); // Still mark as ready to show the UI
-      }
+      if (isP5Ready) onReady(true);
     }, 2500);
 
     return () => clearTimeout(timer);
-  }, [isP5Ready, onReady, hasError]);
+  }, [isP5Ready, onReady]);
 
   // Synchronize start signal
   useEffect(() => {
@@ -71,23 +64,6 @@ const SketchCanvas: React.FC<SketchCanvasProps> = ({
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
-      {hasError && !hasStarted && (
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          color: 'white',
-          fontFamily: 'Courier New, monospace',
-          textAlign: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{ fontSize: '18px', marginBottom: '10px' }}>Unable to load canvas</div>
-          <div style={{ fontSize: '14px', opacity: 0.7 }}>
-            Try refreshing the page or use a different device
-          </div>
-        </div>
-      )}
       <div id="loader" className={hasStarted ? 'fade' : ''}>
         <div className="title">LOADING</div>
         <div className="bar-bg">
