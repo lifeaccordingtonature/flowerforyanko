@@ -28,6 +28,11 @@ body {
   align-items: center;
   height: 100vh;
   width: 100vw;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 #root {
@@ -73,12 +78,26 @@ canvas {
   margin-bottom: 24px;
 }
 
+@media (max-width: 480px) {
+  #loader .title {
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+}
+
 #loader .bar-bg {
   width: 180px;
   height: 3px;
   background: #222;
   border-radius: 2px;
   overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  #loader .bar-bg {
+    width: 120px;
+  }
 }
 
 #loader .bar-fill {
@@ -126,6 +145,19 @@ canvas {
   text-transform: uppercase;
   transition: all 0.3s ease;
   backdrop-filter: blur(5px);
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .start-btn {
+    font-size: 12px;
+    padding: 14px 30px;
+    letter-spacing: 3px;
+  }
 }
 
 .start-btn:hover {
@@ -148,6 +180,18 @@ canvas {
   transition: opacity 0.8s var(--transition-smooth);
 }
 
+@media (max-width: 768px) {
+  .ui-overlay {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ui-overlay {
+    padding: 15px;
+  }
+}
+
 .ui-overlay.hidden {
   opacity: 0;
   visibility: hidden;
@@ -159,6 +203,12 @@ canvas {
   gap: 15px;
   align-items: flex-start;
   pointer-events: auto;
+}
+
+@media (max-width: 1024px) {
+  .controls-panel-desktop {
+    gap: 12px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -173,16 +223,33 @@ canvas {
   border: none;
   color: var(--color-ui-dim);
   font-family: 'Courier New', monospace;
-  font-size: 28px; /* Increased size */
+  font-size: 28px;
   cursor: pointer;
   z-index: var(--z-hamburger);
   display: none;
-  padding: 10px; /* Touch target */
+  padding: 12px;
+  min-width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.hamburger-btn:active {
+  color: var(--color-ui-active);
 }
 
 @media (max-width: 768px) {
   .hamburger-btn {
-    display: block;
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .hamburger-btn {
+    font-size: 24px;
+    padding: 10px;
   }
 }
 
@@ -203,6 +270,17 @@ canvas {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: auto;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 480px) {
+  .mobile-drawer {
+    width: 100%;
+    max-width: 280px;
+    padding: 70px 25px 30px 25px;
+    gap: 25px;
+  }
 }
 
 .mobile-drawer.open {
@@ -216,17 +294,28 @@ canvas {
   font-family: 'Courier New', monospace;
   text-transform: uppercase;
   letter-spacing: 2.5px;
-  font-size: 13px; /* P2: min font size */
+  font-size: 13px;
   cursor: pointer;
   padding: 8px 0;
   text-align: left;
   transition: all 0.2s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 768px) {
   .text-btn {
-    padding: 12px 0; /* P2: Touch target */
+    padding: 12px 0;
     font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-btn {
+    font-size: 13px;
+    padding: 12px 0;
+    letter-spacing: 2px;
   }
 }
 
@@ -271,6 +360,26 @@ canvas {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   animation: slideIn 0.3s var(--transition-smooth);
+}
+
+@media (max-width: 768px) {
+  .audio-error-toast {
+    bottom: 20px;
+    right: 20px;
+    font-size: 11px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .audio-error-toast {
+    bottom: 15px;
+    right: 15px;
+    left: 15px;
+    right: auto;
+    font-size: 11px;
+    padding: 8px 16px;
+  }
 }
 
 @keyframes slideIn {
