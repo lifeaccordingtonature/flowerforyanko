@@ -4,13 +4,11 @@ import { RenderMode } from '../types';
 interface ControlsProps {
   effectMode: RenderMode;
   setEffectMode: (mode: RenderMode) => void;
-  onCloseMenu?: () => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
   effectMode,
-  setEffectMode,
-  onCloseMenu
+  setEffectMode
 }) => {
   const modes = ['ascii', 'dots', 'pixel', 'all'] as const;
 
@@ -24,7 +22,6 @@ const Controls: React.FC<ControlsProps> = ({
             className={`text-btn ${effectMode === index ? 'active' : ''}`}
             onClick={() => { 
               setEffectMode(index as RenderMode); 
-              onCloseMenu?.();
             }}
           >
             {mode}

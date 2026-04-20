@@ -7,7 +7,6 @@ function App() {
   const [effectMode, setEffectMode] = useState<RenderMode>(0);
   const [isReady, setIsReady] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -50,22 +49,6 @@ function App() {
           <Controls 
             effectMode={effectMode}
             setEffectMode={setEffectMode}
-          />
-        </div>
-
-        <button 
-          className="hamburger-btn" 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
-        >
-          {isMenuOpen ? '×' : '☰'}
-        </button>
-
-        <div className={`mobile-drawer ${isMenuOpen ? 'open' : ''}`}>
-          <Controls 
-            effectMode={effectMode}
-            setEffectMode={setEffectMode}
-            onCloseMenu={() => setIsMenuOpen(false)}
           />
         </div>
       </div>
