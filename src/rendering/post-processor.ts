@@ -89,7 +89,16 @@ export const renderToScreen = (
         mode = hash < modeT ? renderMode : prevMode;
       }
 
-      if (mode === RenderMode.ASCII) {
+      // Handle ALL mode by randomly selecting between ASCII, DOTS, and PIXEL
+      let actualMode = mode;
+      if (mode === RenderMode.ALL) {
+        const rand = ((sx * 31 + sy * 47) & 0xFF) * 0.00392;
+        if (rand < 0.33) actualMode = RenderMode.ASCII;
+        else if (rand < 0.66) actualMode = RenderMode.DOTS;
+        else actualMode = RenderMode.PIXEL;
+      }
+
+      if (actualMode === RenderMode.ASCII) {
         const fontSz = p.floor(asciiSize * (0.4 + bright * 0.004));
         const fontStr = fontSz + 'px Courier New';
         if (fontStr !== lastFontStr) {
@@ -99,7 +108,7 @@ export const renderToScreen = (
         ctx.fillStyle = `rgb(${r},${gr},${b})`;
         const ci = ((bright >> 2) + ((sx * 7 + sy * 13) >> 3)) % chars.length;
         ctx.fillText(chars[ci], cx, cy);
-      } else if (mode === RenderMode.DOTS) {
+      } else if (actualMode === RenderMode.DOTS) {
         p.fill(r, gr, b);
         const d = gEff * (0.1 + bright * 0.0033);
         p.ellipse(cx, cy, d, d);
